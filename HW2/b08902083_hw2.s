@@ -32,46 +32,44 @@ __start:
     j exit
     
 op0:
-  add s3 s0 s2
-  j exit
+    add s3 s0 s2
+    j exit
   
 op1:
-  sub s3 s0 s2
-  j exit
+    sub s3 s0 s2
+    j exit
 
 op2:
-  mul s3 s0 s2
-  j exit
+    mul s3 s0 s2
+    j exit
 
 op3:
-  beq s2 x0 zero_except
-  div s3 s0 s2
-  j exit
+    beq s2 x0 zero_except
+    div s3 s0 s2
+    j exit
 
 op4:
-  blt s2 x0 exit
-  addi s3 x0 1
-  beq s2 x0 exit
-  beq x0 x0 op4loop
+    addi s3 x0 1
+    beq s2 x0 exit
+    beq x0 x0 op4loop
   
 op4loop:
-  beq s2 s5 exit
-  addi s5 s5 1
-  mul s3 s3 s0
-  beq x0 x0 op4loop
+    beq s2 s5 exit
+    addi s5 s5 1
+    mul s3 s3 s0
+    beq x0 x0 op4loop
 
 op5:
-  blt s0 x0 exit
-  addi s3 x0 1
-  beq s0 x0 exit
-  addi s5 x0 1
-  beq x0 x0 op5loop
+    addi s3 x0 1
+    beq s0 x0 exit
+    addi s5 x0 1
+    beq x0 x0 op5loop
   
 op5loop:
-  beq s0 s5 exit
-  addi s5 s5 1
-  mul s3 s3 s5
-  beq x0 x0 op5loop
+    beq s0 s5 exit
+    addi s5 s5 1
+    mul s3 s3 s5
+    beq x0 x0 op5loop
 
 exit:
     # Output the result
