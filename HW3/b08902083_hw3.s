@@ -10,12 +10,14 @@ __start:
     ecall
     add x5 x10 x0
     
+    #call function
     jal x1 t_rec
     jal x0 exit
     
-#arg in x10, return in x11
+#arg in x5, return in x11
 t_rec:
-    blt x5 x31 trivial #if n < 2
+    #if n < 2
+    blt x5 x31 trivial
     
     #setup
     addi x2 x2 -32 #reserve stack
