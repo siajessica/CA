@@ -1,13 +1,3 @@
-`include "Adder.v"
-`include "ALU_Control.v"
-`include "ALU.v"
-`include "Control.v"
-`include "MUX32.v"
-`include "Sign_Extend.v"
-`include "Registers.v"
-`include "Instruction_Memory.v"
-`include "PC.v"
-
 module CPU
 (
     clk_i, 
@@ -45,7 +35,7 @@ wire     [1:0]  ALUOp;
 wire            RegWrite, ALUSrc;
 
 Control Control(
-    .Op_i       (instr[5:0]),
+    .Op_i       (instr[6:0]),
     .ALUOp_o    (ALUOp),
     .ALUSrc_o   (ALUSrc),
     .RegWrite_o (RegWrite)
