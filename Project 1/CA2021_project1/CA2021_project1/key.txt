@@ -1,0 +1,92 @@
+//PC
+PC_o							    PC_now
+PC_Four						        PC_four
+PC_Branch						    PC_branch
+instr							    instr
+
+//Control
+Ctrl_RegWrite
+Ctrl_MemtoReg
+Ctrl_MemRead
+Ctrl_MemWrite
+Ctrl_ALUOp
+Ctrl_ALUSrc
+Ctrl_Branch
+
+//ALU_Control
+ALUCtrl						        ALUCtrl
+
+//Registers
+RS1data						        RS1data
+RS2data						        RS2data
+
+//ALU
+ALU_Result						    ALU_Res
+
+//Sign_Extend
+SignExtend_Result				    SignExtend_Res
+
+//MUX32
+MUX_ALUSRC_Result
+MUX_MemtoReg_Result
+MUX_PC_Result
+
+//Data_Memory
+MemRead_Result
+
+//Register_IFID
+IFID_instr
+IFID_pc
+
+//Register_IDEX
+IDEX_RS1Data
+IDEX_RS2Data
+IDEX_SignExtend
+IDEX_funct
+IDEX_RDAddr
+IDEX_RS1Addr
+IDEX_RS2Addr
+IDEX_ALUOp
+IDEX_RegWrite
+IDEX_MemtoReg
+IDEX_MemRead
+IDEX_MemWrite
+IDEX_ALUSrc
+
+//Register_EXMEM
+EXMEM_ALUResult
+EXMEM_MemWriteData
+EXMEM_RDAddr
+EXMEM_RegWrite
+EXMEM_MemtoReg
+EXMEM_MemRead
+EXMEM_MemWrite
+
+//Register_MEMWB
+MEMWB_ALUResult
+MEMWB_MemReadData
+MEMWB_RDAddr
+MEMWB_RegWrite
+MEMWB_MemtoReg
+
+//Forwarding_Unit
+Forward A                           Forward_A
+Forward B                           Forward_B
+
+//MUX32_4
+Forward_MUX_A_Result                Forward_MUX_A_Res
+Forward_MUX_B_Result                Forward_MUX_B_Res
+
+//And
+Flush                               Flush
+
+//Equal
+Equal_Result                        Equal_Res
+
+//Shift_Left
+ShiftLeft_Result                   ShiftLeft_Res
+
+//Hazard_Detection
+PCWrite
+Stall                               Stall
+NoOp                                NoOp
