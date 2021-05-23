@@ -294,14 +294,14 @@ Register_MEMWB Register_MEMWB (
 );
 
 Forwarding_Unit Forwarding_Unit(
-	.EX_RS1_i                (IDEX_RS1Addr),
-	.EX_RS2_i                (IDEX_RS2Addr),
-	.MEM_RegWrite_i          (EXMEM_RegWrite),
-	.MEM_Rd_i                (EXMEM_RDaddr),
-	.WB_RegWrite_i           (MEMWB_RegWrite),
-	.WB_Rd_i                 (MEMWB_RDaddr),
-	.Forward_A_o             (Forward_A),
-	.Forward_B_o             (Forward_B)
+	EX_RS1_i                (IDEX_RS1Addr),
+	EX_RS2_i                (IDEX_RS2Addr),
+	MEM_RegWrite_i          (EXMEM_RegWrite),
+	MEM_Rd_i                (EXMEM_RDaddr),
+	WB_RegWrite_i           (MEMWB_RegWrite),
+	WB_Rd_i                 (MEMWB_RDaddr),
+	Forward_A_o             (Forward_A),
+	Forward_B_o             (Forward_B)
 );
 
 MUX32_4i ForwardA_MUX(

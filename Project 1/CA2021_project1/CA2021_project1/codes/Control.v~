@@ -3,8 +3,8 @@
 `define S_Type  2'b01
 `define SB_Type 2'b11
 `define R       7'b0110011
-`define I_Imm   7'b0010011
-`define I_lw    7'b0000011
+`define I_Imm   7'0010011
+`define I_lw    7'0000011
 `define S       7'b0100011
 `define SB      7'b1100011
 
