@@ -36,7 +36,7 @@ always @(*) begin
 				10'b0000000000	: ALUCtrl_o <= `ADD;
 				10'b0100000000	: ALUCtrl_o <= `SUB;
 				10'b0000001000 	: ALUCtrl_o <= `MUL;
-                default : ALUCtrl_o <= 3'b000;
+                default : ALUCtrl_o <= 4'b0011;
             endcase
         end
 
@@ -45,7 +45,7 @@ always @(*) begin
                 3'b000:	ALUCtrl_o <= `ADDI;
 				3'b101: ALUCtrl_o <= `SRAI;
                 3'b010: ALUCtrl_o <= `LW;
-                default : ALUCtrl_o <= 3'b000;
+                default : ALUCtrl_o <= 4'b0000;
             endcase
         end
 
