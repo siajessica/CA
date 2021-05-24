@@ -55,8 +55,8 @@ initial begin
     // [RegisterInitialization] DO NOT REMOVE THIS FLAG !!!
 
     // TODO: initialize your pipeline registers
-    CPU.Register_IFID.instr_o            = 32'b0;
-    CPU.Register_IDEX.RS1Data_o          = 32'b0;
+    /*CPU.IFID.instr_o            = 32'b0;
+    CPU.IDEX.RS1Data_o          = 32'b0;
     CPU.IDEX.RS2Data_o          = 32'b0;
     CPU.IDEX.SignExtend_Res_o   = 32'b0;
     CPU.IDEX.funct_o            = 10'b0;
