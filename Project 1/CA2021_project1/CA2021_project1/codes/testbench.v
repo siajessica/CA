@@ -43,7 +43,30 @@ initial begin
     // [RegisterInitialization] DO NOT REMOVE THIS FLAG !!!
 
     // TODO: initialize your pipeline registers
-
+    CPU.IFID.instr_o            = 32'b0;
+    CPU.IDEX.RS1Data_o          = 32'b0;
+	CPU.IDEX.RS2Data_o          = 32'b0;
+    CPU.IDEX.SignExtend_Res_o   = 32'b0;
+    CPU.IDEX.funct_o            = 10'b0;
+    CPU.IDEX.RdAddr_o           = 5'b0
+    CPU.IDEX.RegWrite_o         = 1'b0;
+    CPU.IDEX.MemtoReg_o         = 1'b0;
+    CPU.IDEX.MemRead_o          = 1'b0;
+    CPU.IDEX.MemWrite_o         = 1'b0;
+    CPU.IDEX.ALUOp_o            = 2'b0;
+    CPU.IDEX.ALUSrc_o           = 1'b0; 
+    CPU.EXMEM.ALU_Res_o         = 32'b0;
+    CPU.EXMEM.MemWrite_Data_o   = 32'b0;
+    CPU.EXMEM.RDaddr_o          = 5'b0;
+    CPU.EXMEM.RegWrite_o        = 1'b0; 
+    CPU.EXMEM.MemtoReg_o        = 1'b0; 
+    CPU.EXMEM.MemRead_o         = 1'b0;  
+    CPU.EXMEM.MemWrite_o        = 1'b0;
+    CPU.MEMWB.MemAddr_o         = 32'b0;
+    CPU.MEMWB.MemRead_Data_o    = 32'b0;
+    CPU.MEMWB.RDaddr_o          = 5'b0;
+    CPU.MEMWB.RegWrite_o        = 1'b0;
+    CPU.MEMWB.MemtoReg_o        = 1'b0;
     
     // Load instructions into instruction memory
     // Make sure you change back to "instruction.txt" before submission
