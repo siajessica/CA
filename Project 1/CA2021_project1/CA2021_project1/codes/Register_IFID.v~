@@ -1,4 +1,4 @@
-module Register_IFID(
+module IFID_Register(
 	clk_i,
 	start_i,
 

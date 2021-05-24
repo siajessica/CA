@@ -60,7 +60,7 @@ initial begin
     CPU.Register_IDEX.RS2Data_o          = 32'b0;
     CPU.Register_IDEX.SignExtend_Res_o   = 32'b0;
     CPU.Register_IDEX.funct_o            = 10'b0;
-    CPU.Register_IDEX.RDaddr_o           = 5'b0;
+    CPU.Register_IDEX.RdAddr_o           = 5'b0;
     CPU.Register_IDEX.RegWrite_o         = 1'b0;
     CPU.Register_IDEX.MemtoReg_o         = 1'b0;
     CPU.Register_IDEX.MemRead_o          = 1'b0;

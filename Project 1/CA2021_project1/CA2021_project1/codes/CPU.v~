@@ -199,7 +199,7 @@ Control Control(
 	.Branch_o   (Ctrl_Branch)
 );
 
-Register_IFID Register_IFID(
+IFID_Register IFID_Register(
 	.clk_i      (clk_i),
 	.start_i    (start_i),
 
