@@ -1,7 +1,7 @@
 module MUX32_4i(
 	Forward_in,
 	EXRS_Data_in,
-	MEM_ALU_Result_in,
+	MEM_ALU_Res_in,
 	WB_WriteData_in,
 	MUX_Res_o
 );
@@ -9,7 +9,7 @@ module MUX32_4i(
 //Ports
 input   [1:0]   Forward_in;
 input   [31:0]  EXRS_Data_in;
-input   [31:0]  MEM_ALU_Result_in;
+input   [31:0]  MEM_ALU_Res_in;
 input   [31:0]  WB_WriteData_in;
 output  [31:0]  MUX_Res_o;
 
@@ -28,7 +28,7 @@ always @(*) begin
         end
 
         2'b10: begin
-            MUX_Res = MEM_ALU_Result_in;
+            MUX_Res = MEM_ALU_Res_in;
         end
 
         default: begin

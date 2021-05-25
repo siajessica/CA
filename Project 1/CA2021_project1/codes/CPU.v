@@ -307,7 +307,7 @@ Forwarding_Unit Forwarding_Unit(
 MUX32_4i ForwardA_MUX(
 	.Forward_in             (Forward_A),
 	.EXRS_Data_in           (IDEX_RS1Data),
-	.MEM_ALU_Result_in      (EXMEM_ALU_Res),
+	.MEM_ALU_Res_in         (EXMEM_ALU_Res),
 	.WB_WriteData_in        (MUX_MemtoReg_Res),
 	.MUX_Res_o              (ForwardA_MUX_Res)
 );
@@ -315,7 +315,7 @@ MUX32_4i ForwardA_MUX(
 MUX32_4i ForwardB_MUX(
 	.Forward_in             (Forward_B),
 	.EXRS_Data_in           (IDEX_RS2Data),
-	.MEM_ALU_Result_in      (EXMEM_ALU_Res),
+	.MEM_ALU_Res_in         (EXMEM_ALU_Res),
 	.WB_WriteData_in        (MUX_MemtoReg_Res),
 	.MUX_Res_o              (ForwardB_MUX_Res)
 );
@@ -324,7 +324,7 @@ Hazard_Detection Hazard_Detection(
     .RS1addr_i          (IFID_instr[19:15]),
     .RS2addr_i          (IFID_instr[24:20]),
     .MemRead_i          (IDEX_MemRead), 
-    .RdAddr_i           (IDEX_RDaddr),
+    .RDaddr_i           (IDEX_RDaddr),
     .PCWrite_o          (PCWrite),
     .Stall_o            (Stall),
     .NoOp_o             (NoOp)
