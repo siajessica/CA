@@ -141,14 +141,14 @@ Instruction_Memory Instruction_Memory(
     .instr_o    (instr)
 );
 
-/*Data_Memory Data_Memory(
+Data_Memory Data_Memory(
     .clk_i          (clk_i), 
     .addr_i         (EXMEM_ALU_Res), 
     .MemRead_i      (EXMEM_MemRead),
     .MemWrite_i     (EXMEM_MemWrite),
     .data_i         (EXMEM_MemWrite_Data),
     .data_o         (MemRead_Res)
-);*/
+);
 
 MUX32 MUX_ALUSrc(
     .data1_i    (ForwardB_MUX_Res),
