@@ -17,7 +17,8 @@ reg     [31:0]  MUX_Res;
 
 assign MUX_Res_o = MUX_Res;
 
-always @(*) begin
+always @(Forward_in or EXRS_Data_in or MEM_ALU_Res_in or WB_WriteData_in)
+begin
 	case (Forward_in)
         2'b00:	begin
             MUX_Res = EXRS_Data_in;

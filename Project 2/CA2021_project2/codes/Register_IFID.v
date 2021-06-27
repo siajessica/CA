@@ -5,11 +5,12 @@ module Register_IFID(
 
     instr_i,
     pc_i,
+
+	Stall_i,
+    Flush_i
+
 	instr_o,
     pc_o,
-
-    Stall_i,
-    Flush_i
 );
 
 input			clk_i,start_i, stall_i;

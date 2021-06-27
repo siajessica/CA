@@ -4,19 +4,19 @@ module Register_EXMEM (
     stall_i,
 
     ALU_Res_i,
-    ALU_Res_o,
-
     MemWrite_Data_i,
-    MemWrite_Data_o,
-
     RDaddr_i,
+
+    ALU_Res_o,    
+    MemWrite_Data_o,    
     RDaddr_o,
 
 	//Control Signal
     RegWrite_i, 
     MemtoReg_i, 
     MemRead_i,  
-    MemWrite_i, 
+    MemWrite_i,
+
     RegWrite_o, 
     MemtoReg_o, 
     MemRead_o,  

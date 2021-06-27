@@ -126,29 +126,12 @@ Equal Equal(
     .data_o     (Equal_Res)
 );
 
-PC PC(
-    .clk_i      (clk_i),
-    .rst_i      (rst_i),
-    .start_i    (start_i),
-    .stall_i    (CacheCtrl_Stall),
-    .PCWrite_i  (PCWrite),
-    .pc_i       (MUX_PC_Res),
-    .pc_o       (PC_now)
-);
-
 Instruction_Memory Instruction_Memory(
     .addr_i     (PC_now), 
     .instr_o    (instr)
 );
 
-/*Data_Memory Data_Memory(
-    .clk_i          (clk_i), 
-    .addr_i         (EXMEM_ALU_Res), 
-    .MemRead_i      (EXMEM_MemRead),
-    .MemWrite_i     (EXMEM_MemWrite),
-    .data_i         (EXMEM_MemWrite_Data),
-    .data_o         (MemRead_Res)
-);*/
+//Data Memory Hapus
 
 MUX32 MUX_ALUSrc(
     .data1_i    (ForwardB_MUX_Res),
@@ -217,6 +200,55 @@ Control Control(
 	.Branch_o   (Ctrl_Branch)
 );
 
+Forwarding_Unit Forwarding_Unit(
+	.EX_RS1_i                (IDEX_RS1Addr),
+	.EX_RS2_i                (IDEX_RS2Addr),
+	.MEM_RegWrite_i          (EXMEM_RegWrite),
+	.MEM_Rd_i                (EXMEM_RDaddr),
+	.WB_RegWrite_i           (MEMWB_RegWrite),
+	.WB_Rd_i                 (MEMWB_RDaddr),
+	.Forward_A_o             (Forward_A),
+	.Forward_B_o             (Forward_B)
+);
+
+MUX32_4i ForwardA_MUX(
+	.Forward_in             (Forward_A),
+	.EXRS_Data_in           (IDEX_RS1Data),
+	.MEM_ALU_Res_in         (EXMEM_ALU_Res),
+	.WB_WriteData_in        (MUX_MemtoReg_Res),
+	.MUX_Res_o              (ForwardA_MUX_Res)
+);
+
+MUX32_4i ForwardB_MUX(
+	.Forward_in             (Forward_B),
+	.EXRS_Data_in           (IDEX_RS2Data),
+	.MEM_ALU_Res_in         (EXMEM_ALU_Res),
+	.WB_WriteData_in        (MUX_MemtoReg_Res),
+	.MUX_Res_o              (ForwardB_MUX_Res)
+);
+
+Hazard_Detection Hazard_Detection(
+    .RS1addr_i          (IFID_instr[19:15]),
+    .RS2addr_i          (IFID_instr[24:20]),
+    .MemRead_i          (IDEX_MemRead), 
+    .RDaddr_i           (IDEX_RDaddr),
+    .PCWrite_o          (PCWrite),
+    .Stall_o            (Stall),
+    .NoOp_o             (NoOp)
+);
+
+// Changes for Project 2
+
+PC PC(
+    .clk_i      (clk_i),
+    .rst_i      (rst_i),
+    .start_i    (start_i),
+    .stall_i    (CacheCtrl_Stall),
+    .PCWrite_i  (PCWrite),
+    .pc_i       (MUX_PC_Res),
+    .pc_o       (PC_now)
+);
+
 Register_IFID Register_IFID(
 	.clk_i      (clk_i),
 	.start_i    (start_i),
@@ -224,11 +256,12 @@ Register_IFID Register_IFID(
 
     .instr_i    (instr),
     .pc_i       (PC_now),
-	.instr_o    (IFID_instr),
-    .pc_o       (IFID_PC),
 
     .Stall_i    (Stall),
-    .Flush_i    (Flush)
+    .Flush_i    (Flush),
+
+    .instr_o    (IFID_instr),
+    .pc_o       (IFID_PC)
 );
 
 Register_IDEX Register_IDEX (
@@ -276,12 +309,11 @@ Register_EXMEM Register_EXMEM (
     .stall_i                (CacheCtrl_Stall),
 
     .ALU_Res_i              (ALU_Res),
-    .ALU_Res_o              (EXMEM_ALU_Res),
-
     .MemWrite_Data_i        (ForwardB_MUX_Res),
-    .MemWrite_Data_o        (EXMEM_MemWrite_Data),
-
     .RDaddr_i               (IDEX_RDaddr),
+
+    .ALU_Res_o              (EXMEM_ALU_Res),
+    .MemWrite_Data_o        (EXMEM_MemWrite_Data),
     .RDaddr_o               (EXMEM_RDaddr),
 
 	//Control Signal
@@ -301,7 +333,7 @@ Register_MEMWB Register_MEMWB (
     .stall_i                (CacheCtrl_Stall),
 
 	.MemAddr_i              (EXMEM_ALU_Res),
-	.MemRead_Data_i         (MemRead_Res),
+	.MemRead_Data_i         (CacheCtrl_MEMWB_Data),
 	.RDaddr_i               (EXMEM_RDaddr),
 
 	.MemAddr_o              (MEMWB_ALU_Res),
@@ -313,43 +345,6 @@ Register_MEMWB Register_MEMWB (
 	.MemtoReg_i             (EXMEM_MemtoReg),
 	.RegWrite_o             (MEMWB_RegWrite),
 	.MemtoReg_o             (MEMWB_MemtoReg)
-);
-
-Forwarding_Unit Forwarding_Unit(
-	.EX_RS1_i                (IDEX_RS1Addr),
-	.EX_RS2_i                (IDEX_RS2Addr),
-	.MEM_RegWrite_i          (EXMEM_RegWrite),
-	.MEM_Rd_i                (EXMEM_RDaddr),
-	.WB_RegWrite_i           (MEMWB_RegWrite),
-	.WB_Rd_i                 (MEMWB_RDaddr),
-	.Forward_A_o             (Forward_A),
-	.Forward_B_o             (Forward_B)
-);
-
-MUX32_4i ForwardA_MUX(
-	.Forward_in             (Forward_A),
-	.EXRS_Data_in           (IDEX_RS1Data),
-	.MEM_ALU_Res_in         (EXMEM_ALU_Res),
-	.WB_WriteData_in        (MUX_MemtoReg_Res),
-	.MUX_Res_o              (ForwardA_MUX_Res)
-);
-
-MUX32_4i ForwardB_MUX(
-	.Forward_in             (Forward_B),
-	.EXRS_Data_in           (IDEX_RS2Data),
-	.MEM_ALU_Res_in         (EXMEM_ALU_Res),
-	.WB_WriteData_in        (MUX_MemtoReg_Res),
-	.MUX_Res_o              (ForwardB_MUX_Res)
-);
-
-Hazard_Detection Hazard_Detection(
-    .RS1addr_i          (IFID_instr[19:15]),
-    .RS2addr_i          (IFID_instr[24:20]),
-    .MemRead_i          (IDEX_MemRead), 
-    .RDaddr_i           (IDEX_RDaddr),
-    .PCWrite_o          (PCWrite),
-    .Stall_o            (Stall),
-    .NoOp_o             (NoOp)
 );
 
 dcache_controller dcache(

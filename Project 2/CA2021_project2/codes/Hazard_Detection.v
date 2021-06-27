@@ -22,7 +22,7 @@ reg             PCWrite_o;
 reg             Stall_o;
 reg             NoOp_o;
 
-always @(*)
+always @(RS1addr_i or RS2addr_i or MemRead_i or RDaddr_i)
 begin
 	if (MemRead_i) begin
 		if (RDaddr_i == RS1addr_i)begin

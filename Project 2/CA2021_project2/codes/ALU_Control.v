@@ -26,7 +26,7 @@ input   [1:0] ALUOp_i;
 output  [3:0] ALUCtrl_o;
 reg     [3:0] ALUCtrl_o;
 
-always @(*) begin
+always @(funct_i or ALUOp_i) begin
     case(ALUOp_i)
         `R_Type: begin
             case(funct_i)

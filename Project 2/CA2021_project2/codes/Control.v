@@ -29,7 +29,7 @@ output RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o, ALUSrc_o, Branch_o;
 reg     [1:0]   ALUOp_o;
 reg RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o, ALUSrc_o, Branch_o;
 
-always @(*) begin
+always @(NoOp_i or Op_i) begin
 	if (NoOp_i) begin
 		RegWrite_o	= 1'b0;
 		MemtoReg_o	= 1'b0;

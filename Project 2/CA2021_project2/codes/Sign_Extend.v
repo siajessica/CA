@@ -14,7 +14,7 @@ input   [31:0] data_i;
 output  [31:0] data_o;
 reg     [31:0] data_o;
 
-always @(*) begin
+always @(data_i) begin
     case(data_i[6:0])
         `R: begin
             data_o[31:0]  = 32'b0;

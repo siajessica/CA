@@ -25,7 +25,7 @@ output  [31:0]  data_o;
 
 reg     [31:0]  data_o;
 
-always @(*) begin
+always @(data1_i or data2_i or ALUCtrl_i) begin
     case (ALUCtrl_i)
         `AND 	: data_o <= $signed(data1_i) & $signed(data2_i);
 		`XOR 	: data_o <= $signed(data1_i) ^ $signed(data2_i);

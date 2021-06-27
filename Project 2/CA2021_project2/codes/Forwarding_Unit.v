@@ -26,7 +26,8 @@ reg 	[1:0] 	Forward_B_res;
 assign Forward_A_o = Forward_A_res;
 assign Forward_B_o = Forward_B_res;
 
-always @(*) begin
+always @(EX_RS1_i or EX_RS2_i or MEM_RegWrite_i or MEM_Rd_i or WB_RegWrite_i or WB_Rd_i)
+begin
 	Forward_A_res = 2'b00;
 	Forward_B_res = 2'b00;
 	flag_A = 1'b0;
