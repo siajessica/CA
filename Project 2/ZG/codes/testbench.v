@@ -8,7 +8,7 @@ reg                Reset;
 integer            i, j, outfile, outfile2, counter;
 reg                flag;
 reg        [26:0]  address;
-reg        [23:0]  tag;
+reg        [23+1:0]  tag;
 reg        [3:0]   index;
 
 wire    [256-1:0]  mem_cpu_data; 
