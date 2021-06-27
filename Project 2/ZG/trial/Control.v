@@ -1,12 +1,7 @@
-`define R_Type 	2'b10
-`define I_Type 	2'b00
-`define S_Type 	2'b01
+`define R_Type 2'b10
+`define I_Type 2'b00
+`define S_Type 2'b01
 `define SB_Type 2'b11
-`define R       7'b0110011
-`define I_Imm   7'b0010011
-`define I_lw    7'b0000011
-`define S       7'b0100011
-`define SB      7'b1100011
 
 module Control(
 	Op_i,		
@@ -24,13 +19,13 @@ module Control(
 input 	[6:0]		Op_i;	
 input 				NoOp_i;
 
-output 	[1:0]		ALUOp_o;
 output RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o, ALUSrc_o, Branch_o;
+output 	[1:0]		ALUOp_o;
 
-reg 	[1:0]		ALUOp_o;
 reg RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o, ALUSrc_o, Branch_o;
+reg 	[1:0]		ALUOp_o;
 
-always @(NoOp_i or Op_i) begin
+always @(Op_i or NoOp_i) begin
 	if (NoOp_i) begin
 		RegWrite_o	= 1'b0;
 		MemtoReg_o	= 1'b0;
@@ -42,7 +37,8 @@ always @(NoOp_i or Op_i) begin
 	end
 	else begin
 		case(Op_i)
-			`R: begin
+			// R-Type (Arithmetic)
+			7'b0110011: begin
 				RegWrite_o	= 1'b1;
 				MemtoReg_o	= 1'b0;
 				MemRead_o	= 1'b0;
@@ -52,7 +48,8 @@ always @(NoOp_i or Op_i) begin
 				Branch_o	= 1'b0;
 			end
 
-			`I_Imm: begin
+			// I-Type (Immediate Arithmetic) 
+			7'b0010011: begin
 				RegWrite_o	= 1'b1;
 				MemtoReg_o	= 1'b0;
 				MemRead_o	= 1'b0;
@@ -62,7 +59,8 @@ always @(NoOp_i or Op_i) begin
 				Branch_o	= 1'b0;
 			end
 
-			`I_lw: begin
+			// I-Type (Load) 
+			7'b0000011: begin
 				RegWrite_o	= 1'b1;
 				MemtoReg_o	= 1'b1;
 				MemRead_o	= 1'b1;
@@ -72,7 +70,8 @@ always @(NoOp_i or Op_i) begin
 				Branch_o	= 1'b0;
 			end
 
-			`S: begin
+			// S-Type (Store)
+			7'b0100011: begin
 				RegWrite_o	= 1'b0;
 				MemtoReg_o	= 1'b0;
 				MemRead_o	= 1'b0;
@@ -82,7 +81,7 @@ always @(NoOp_i or Op_i) begin
 				Branch_o	= 1'b0;
 			end
 
-			`SB: begin
+			7'b1100011: begin
 				RegWrite_o	= 1'b0;
 				MemtoReg_o	= 1'b0;
 				MemRead_o	= 1'b0;

@@ -1,6 +1,6 @@
-`define R_Type 	2'b10
-`define I_Type 	2'b00
-`define S_Type 	2'b01
+`define R_Type 2'b10
+`define I_Type 2'b00
+`define S_Type 2'b01
 `define SB_Type 2'b11
 `define AND		4'b0000
 `define XOR		4'b0001
@@ -24,6 +24,7 @@ module ALU_Control(
 input 	[9:0] 		funct_i;
 input 	[1:0] 		ALUOp_i;
 output 	[3:0] 		ALUCtrl_o;
+
 reg 	[3:0] 		ALUCtrl_o;
 
 always @(ALUOp_i or funct_i) begin

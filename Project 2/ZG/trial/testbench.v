@@ -2,22 +2,22 @@
 
 module testbench;
 
-reg                     Clk;
-reg                     Start;
-reg                     Reset;
-integer                 i, j, outfile, outfile2, counter;
-reg                     flag;
-reg         [26:0]      address;
-reg         [24:0]      tag;
-reg         [3:0]       index;
+reg                Clk;
+reg                Start;
+reg                Reset;
+integer            i, j, outfile, outfile2, counter;
+reg                flag;
+reg        [26:0]  address;
+reg        [24:0]  tag;
+reg        [3:0]   index;
 
-wire        [255:0]     mem_cpu_data; 
-wire                    mem_cpu_ack;     
-wire        [255:0]     cpu_mem_data; 
-wire        [31:0]      cpu_mem_addr;     
-wire                    cpu_mem_enable; 
-wire                    cpu_mem_write; 
-parameter               num_cycles = 200;
+wire    [255:0]    mem_cpu_data; 
+wire               mem_cpu_ack;     
+wire    [255:0]    cpu_mem_data; 
+wire    [31:0]     cpu_mem_addr;     
+wire               cpu_mem_enable; 
+wire               cpu_mem_write; 
+parameter          num_cycles = 200;
 
 always #(`CYCLE_TIME/2) Clk = ~Clk;    
 
@@ -81,7 +81,6 @@ initial begin
     // [RegisterInitialization] DO NOT REMOVE THIS FLAG !!!
     
     CPU.IFID.instr_o            = 32'b0;
-
     CPU.IDEX.RS1Data_o          = 32'b0;
     CPU.IDEX.RS2Data_o          = 32'b0;
     CPU.IDEX.SignExtended_o     = 32'b0;
@@ -92,8 +91,7 @@ initial begin
     CPU.IDEX.MemRead_o          = 1'b0;
     CPU.IDEX.MemWrite_o         = 1'b0;
     CPU.IDEX.ALUOp_o            = 2'b0;
-    CPU.IDEX.ALUSrc_o           = 1'b0;
-
+    CPU.IDEX.ALUSrc_o           = 1'b0; 
     CPU.EXMEM.ALU_Result_o      = 32'b0;
     CPU.EXMEM.MemWrite_Data_o   = 32'b0;
     CPU.EXMEM.RdAddr_o          = 5'b0;
@@ -101,7 +99,6 @@ initial begin
     CPU.EXMEM.MemtoReg_o        = 1'b0; 
     CPU.EXMEM.MemRead_o         = 1'b0;  
     CPU.EXMEM.MemWrite_o        = 1'b0;
-
     CPU.MEMWB.MemAddr_o         = 32'b0;
     CPU.MEMWB.MemRead_Data_o    = 32'b0;
     CPU.MEMWB.RdAddr_o          = 5'b0;
@@ -110,7 +107,7 @@ initial begin
     
     // Load instructions into instruction memory
     // Make sure you change back to "instruction.txt" before submission
-    $readmemb("instruction_1.txt", CPU.Instruction_Memory.memory);
+    $readmemb("instruction_4.txt", CPU.Instruction_Memory.memory);
     
     // Open output file
     // Make sure you change back to "output.txt" before submission
@@ -123,13 +120,6 @@ initial begin
     for (i=0; i<512; i=i+1) begin
         Data_Memory.memory[i] = 256'b0;
     end
-    
-    //Data_Memory.memory[0] = 256'h0000_1111_2222_3333_4444_5555_6666_7777_8888_9999_AAAA_BBBB_CCCC_DDDD_EEEE_FFFF;
-    //Data_Memory.memory[1] = 256'h8888_9999_AAAA_BBBB_CCCC_DDDD_EEEE_FFFF_7777_6666_5555_4444_3333_2222_1111_0000;
-    //Data_Memory.memory[2] = 256'hECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA;
-    //Data_Memory.memory[3] = 256'h0123_4567_89AB_CDEF_FEDC_BA98_7654_3210_0123_4567_89AB_CDEF_FEDC_BA98_7654_3210;
-    //Data_Memory.memory[32] = 256'h1001_2002_3003_4004_5005_6006_7007_8008_9009_A00A_B00B_C00C_D00D_E00E_F00F;
-
     Data_Memory.memory[0] = 256'h0000_1111_2222_3333_4444_5555_6666_7777_8888_9999_AAAA_BBBB_CCCC_DDDD_EEEE_FFFF;
     Data_Memory.memory[1] = 256'h8888_9999_AAAA_BBBB_CCCC_DDDD_EEEE_FFFF_7777_6666_5555_4444_3333_2222_1111_0000;
     Data_Memory.memory[2] = 256'hECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA_ECFA;

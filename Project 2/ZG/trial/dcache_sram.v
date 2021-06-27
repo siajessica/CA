@@ -29,11 +29,18 @@ output             hit_o;
 // Memory
 reg      [24:0]    tag [0:15][0:1];    
 reg      [255:0]   data[0:15][0:1];
-reg      [15:0]    LRU;
+//reg                 hit_o;
+//reg       [24:0]    tag_o;
+//reg      [255:0]   data_o;
+
 
 integer            i, j;
-integer            idx;
 
+reg [15:0] LRU;
+integer index;
+//always@(posedge clk_i) begin
+//    index <= addr_i[3]*8+addr_i[2]*4+addr_i[1]*2+addr_i[0]*1;    
+//end
 
 // Write Data      
 // 1. Write hit
@@ -46,7 +53,8 @@ always@(posedge clk_i or posedge rst_i) begin
                 data[i][j] <= 256'b0;
             end
         end
-        LRU <= 16'b0; //initialize LRU
+        //initialize LRU(zg)
+        LRU <= 16'b0;
     end
     if (enable_i && write_i) begin
         // TODO: Handle your write of 2-way associative cache + LRU here
@@ -66,26 +74,24 @@ always@(posedge clk_i or posedge rst_i) begin
             data[addr_i][LRU[addr_i]] <= data_i;
             tag[addr_i][LRU[addr_i]] <= tag_i;
             LRU[addr_i] <= ~LRU[addr_i];
-        end  
+        end   
     end
 end
 
 // Read Data      
 // TODO: tag_o=? data_o=? hit_o=?
-wire equal_1, equal_2;
-wire valid_1, valid_2;
-wire res_1, res_2;
-assign equal_1 = (tag_i[22:0] == tag[addr_i][0][22:0])?1'b1:1'b0;
-assign equal_2 = (tag_i[22:0] == tag[addr_i][1][22:0])?1'b1:1'b0;
-assign res_1 = equal_1 & tag[addr_i][0][24];
-assign res_2 = equal_2 & tag[addr_i][1][24];
-assign hit_o = res_1 | res_2;
-assign data_o = (hit_o) ? ((res_1) ? data[addr_i][0] : data[addr_i][1]) : data[addr_i][LRU[addr_i]];
-assign tag_o = (hit_o) ? ((res_1) ? tag[addr_i][0] : tag[addr_i][1]) : tag[addr_i][LRU[addr_i]];
+wire equal1,valid1,equal2,valid2,result1,result2;
+assign equal1 = (tag_i[22:0] == tag[addr_i][0][22:0])?1'b1:1'b0;
+assign equal2 = (tag_i[22:0] == tag[addr_i][1][22:0])?1'b1:1'b0;
+assign result1 = equal1 & tag[addr_i][0][24];
+assign result2 = equal2 & tag[addr_i][1][24];
+assign hit_o = result1 | result2;
+assign data_o = (hit_o)?((result1)?data[addr_i][0]:data[addr_i][1]):data[addr_i][LRU[addr_i]];
+assign tag_o = (hit_o)?((result1)?tag[addr_i][0]:tag[addr_i][1]):tag[addr_i][LRU[addr_i]];
 
 always @(posedge clk_i or posedge rst_i) begin
     if (hit_o) begin
-        if (res_1) begin
+        if (result1) begin
             LRU[addr_i] <= 1'b1;
         end
         else begin
@@ -93,5 +99,29 @@ always @(posedge clk_i or posedge rst_i) begin
         end
     end
 end
+/*
+always @(posedge clk_i) begin
+    if (enable_i) begin
+        if (tag[addr_i][0][22:0] == tag_i) begin
+            data_o <=  data[addr_i][0] ;
+            tag_o <=tag[addr_i][0] ;
+            hit_o <= 1'b1;
+            LRU[addr_i] <= 1'b1;//implement LRU
+        end
+        else if (tag[addr_i][1][22:0] == tag_i) begin
+            data_o <= data[addr_i][1] ;
+            tag_o <= tag[addr_i][1] ;
+            hit_o <= 1'b1;
+            LRU[addr_i] <= 1'b0;//implement LRU
+        end
+        else begin
+            data_o <= data[addr_i][LRU[addr_i]];
+            tag_o <= tag[addr_i][LRU[addr_i]] ;
+            hit_o <= 1'b0;
+        end 
+    end
+end
+*/
+
 
 endmodule
