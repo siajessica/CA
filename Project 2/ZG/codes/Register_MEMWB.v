@@ -11,30 +11,30 @@ module Register_MEMWB (
 	MemRead_Data_o,
 	RdAddr_o,
 
+	//Control Signal
 	RegWrite_i,
 	MemtoReg_i,
-
 	RegWrite_o,
 	MemtoReg_o
 );
 
-input clk_i,start_i,stall_i;
+input 				clk_i,start_i,stall_i;
 input 	[31:0] 		MemAddr_i,MemRead_Data_i;
 input 	[4:0]		RdAddr_i;
-input RegWrite_i, MemtoReg_i;
+input 				RegWrite_i, MemtoReg_i;
 
 output 	[31:0] 		MemAddr_o,MemRead_Data_o;
 output 	[4:0]		RdAddr_o;
-output RegWrite_o, MemtoReg_o;
+output 				RegWrite_o, MemtoReg_o;
 
 reg 	[31:0] 		MemAddr_o,MemRead_Data_o;
 reg 	[4:0]		RdAddr_o;
-reg RegWrite_o, MemtoReg_o;
+reg 				RegWrite_o, MemtoReg_o;
 
 always @(posedge clk_i) begin
-	if (stall_i) begin
-		
+	if (stall_i) begin		
 	end
+
 	else begin
 		if(start_i)	begin
 			MemAddr_o			<= MemAddr_i;		
@@ -45,6 +45,7 @@ always @(posedge clk_i) begin
 	        MemtoReg_o          <= MemtoReg_i;
 
 		end
+		
 		else begin
 			MemAddr_o			<= MemAddr_o;		
 			MemRead_Data_o		<= MemRead_Data_o;		

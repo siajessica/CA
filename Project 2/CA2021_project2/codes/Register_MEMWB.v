@@ -33,6 +33,9 @@ reg                 RegWrite_o, MemtoReg_o;
 
 always @(posedge clk_i) begin
 	if(stall_i) begin
+	end
+
+	else begin
 		if(start_i)	begin
 			MemAddr_o			<= MemAddr_i;		
 			MemRead_Data_o		<= MemRead_Data_i;		

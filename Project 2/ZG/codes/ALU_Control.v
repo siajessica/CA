@@ -27,8 +27,7 @@ output 	[3:0] 		ALUCtrl_o;
 reg 	[3:0] 		ALUCtrl_o;
 
 always @(ALUOp_i or funct_i) begin
-	case(ALUOp_i) 
-		// AND XOR SLL ADD SUB MUL 
+	case(ALUOp_i)  
 		`R_Type: begin
 			case(funct_i)
 				10'b0000000111	: ALUCtrl_o <= `AND;
@@ -40,7 +39,6 @@ always @(ALUOp_i or funct_i) begin
 			endcase
 		end
 
-		// ADDI SRAI LW
 		`I_Type: begin
 			case(funct_i[2:0])
 				3'b000:	ALUCtrl_o <= `ADDI;
@@ -49,12 +47,10 @@ always @(ALUOp_i or funct_i) begin
 			endcase
 		end
 
-		// SW
 		`S_Type: begin
 			ALUCtrl_o <= `SW;
 		end
 
-		// BEQ
 		`SB_Type: begin
 			ALUCtrl_o <= `BEQ;
 		end

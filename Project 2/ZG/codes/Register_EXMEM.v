@@ -3,7 +3,6 @@ module Register_EXMEM (
     start_i,
     stall_i,
 
-    // ALU Result & Data & Instruction Address
     ALU_Result_i,
     MemWrite_Data_i,
     RdAddr_i,
@@ -12,11 +11,11 @@ module Register_EXMEM (
     MemWrite_Data_o,
     RdAddr_o,
 
-	// Control 
+	// Control Signal
     RegWrite_i, 
     MemtoReg_i, 
     MemRead_i,  
-    MemWrite_i, 
+    MemWrite_i,
 
     RegWrite_o, 
     MemtoReg_o, 
@@ -24,23 +23,25 @@ module Register_EXMEM (
     MemWrite_o
      
 );
+
+//Ports
 input               clk_i,start_i,stall_i;
 input   [31:0]      ALU_Result_i, MemWrite_Data_i;
 input   [4:0]       RdAddr_i;
-input RegWrite_i, MemtoReg_i, MemRead_i, MemWrite_i;  
+input               RegWrite_i, MemtoReg_i, MemRead_i, MemWrite_i;  
 
 output   [31:0]      ALU_Result_o, MemWrite_Data_o;
 output   [4:0]       RdAddr_o;
-output RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o;  
+output               RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o;  
 
 reg   [31:0]      ALU_Result_o, MemWrite_Data_o;
 reg   [4:0]       RdAddr_o;
-reg RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o;  
+reg               RegWrite_o, MemtoReg_o, MemRead_o, MemWrite_o;  
 
 always @(posedge clk_i) begin
     if (stall_i) begin
-        
     end
+
     else begin
         if(start_i) begin
             ALU_Result_o        <= ALU_Result_i; 
@@ -53,6 +54,7 @@ always @(posedge clk_i) begin
             MemWrite_o          <= MemWrite_i;
 
         end
+
         else begin
             ALU_Result_o        <= ALU_Result_o; 
             MemWrite_Data_o     <= MemWrite_Data_o;  
@@ -64,7 +66,6 @@ always @(posedge clk_i) begin
             MemWrite_o          <= MemWrite_o;
 
         end 
-        
     end
 end
 

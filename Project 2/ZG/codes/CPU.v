@@ -21,7 +21,7 @@ output  [31:0]      mem_addr_o;
 output              mem_enable_o,mem_write_o;         
 
 // PC
-wire    [31:0]      PC_o,PC_Four,PC_Branch;
+wire    [31:0]      PC_now,PC_Four,PC_Branch;
 wire    [31:0]      instr;
 
 // Control
@@ -35,15 +35,15 @@ wire    [3:0]       ALUCtrl;
 wire    [31:0]      RS2data,RS1data;
 
 // ALU
-wire    [31:0]      ALU_Result;
+wire    [31:0]      ALU_Res;
 
 //Sign_Extend
-wire    [31:0]      SignExtend_Result;
+wire    [31:0]      SignExtend_Res;
 
 // MUX32
-wire    [31:0]      MUX_ALUSRC_Result;
+wire    [31:0]      MUX_ALUSrc_Res;
 wire    [31:0]      MUX_MemtoReg_Result;
-wire    [31:0]      MUX_PC_Result;
+wire    [31:0]      MUX_PC_Res;
 
 // Data_Memory
 
@@ -60,12 +60,12 @@ wire    [1:0]       IDEX_ALUOp;
 wire                IDEX_RegWrite, IDEX_MemtoReg, IDEX_MemRead, IDEX_MemWrite, IDEX_ALUSrc;
 
 // Register_EXMEM
-wire    [31:0]      EXMEM_ALUResult,EXMEM_MemWriteData;
+wire    [31:0]      EXMEM_ALU_Res,EXMEM_MemWriteData;
 wire    [4:0]       EXMEM_RDAddr;
 wire                EXMEM_RegWrite,EXMEM_MemtoReg, EXMEM_MemRead, EXMEM_MemWrite;
 
 // Register_MEMWB
-wire    [31:0]      MEMWB_ALUResult,MEMWB_MemReadData;
+wire    [31:0]      MEMWB_ALU_Res,MEMWB_MemReadData;
 wire    [4:0]       MEMWB_RDAddr;
 wire                MEMWB_RegWrite, MEMWB_MemtoReg;
 
@@ -73,17 +73,17 @@ wire                MEMWB_RegWrite, MEMWB_MemtoReg;
 wire    [1:0]       Forward_A;
 wire    [1:0]       Forward_B;
 // MUX32_4
-wire    [31:0]      Forward_MUX_A_Result;
-wire    [31:0]      Forward_MUX_B_Result;
+wire    [31:0]      ForwardA_MUX_Res;
+wire    [31:0]      ForwardB_MUX_Res;
 
 // And
 wire                Flush;
 
 // Equal
-wire                Equal_Result;
+wire                Equal_Res;
 
 // Shift_Left
-wire    [31:0]      ShiftLeft_Result;
+wire    [31:0]      ShiftLeft_Res;
 
 //Hazard_Detection
 wire PCWrite;
@@ -95,22 +95,22 @@ wire    [31:0]      CacheCtrl_MEMWB_Data;
 wire                CacheCtrl_Stall;
 
 Adder Add_PC(
-    .data1_in   (PC_o),       
+    .data1_in   (PC_now),       
     .data2_in   (32'd4),            
     .data_o     (PC_Four)   
 );
 
 Adder Add_Branch(
-    .data1_in   (ShiftLeft_Result),       
+    .data1_in   (ShiftLeft_Res),       
     .data2_in   (IFID_pc),            
     .data_o     (PC_Branch)   
 );
 
 ALU ALU(
-    .data1_i    (Forward_MUX_A_Result),                  
-    .data2_i    (MUX_ALUSRC_Result),
+    .data1_i    (ForwardA_MUX_Res),                  
+    .data2_i    (MUX_ALUSrc_Res),
     .ALUCtrl_i  (ALUCtrl),                
-    .data_o     (ALU_Result)            
+    .data_o     (ALU_Res)            
 );
 
 ALU_Control ALU_Control(
@@ -121,7 +121,7 @@ ALU_Control ALU_Control(
 
 And And(
     .data1_i(Ctrl_Branch),
-    .data2_i(Equal_Result),
+    .data2_i(Equal_Res),
     .data_o(Flush)
 );
 
@@ -140,23 +140,23 @@ Control Control(
 Equal Equal(
     .data1_i(RS1data),
     .data2_i(RS2data),
-    .equal_o(Equal_Result)
+    .equal_o(Equal_Res)
 );
 
 Instruction_Memory Instruction_Memory(
-    .addr_i     (PC_o),     
+    .addr_i     (PC_now),     
     .instr_o    (instr)            
 );
 
 MUX32 MUX_ALUSrc(
-    .data1_i    (Forward_MUX_B_Result),          
+    .data1_i    (ForwardB_MUX_Res),          
     .data2_i    (IDEX_SignExtend),    
     .select_i   (IDEX_ALUSrc),               
-    .data_o     (MUX_ALUSRC_Result)              
+    .data_o     (MUX_ALUSrc_Res)              
 );
 
 MUX32 MUX_MemtoReg(
-    .data1_i    (MEMWB_ALUResult),          
+    .data1_i    (MEMWB_ALU_Res),          
     .data2_i    (MEMWB_MemReadData),    
     .select_i   (MEMWB_MemtoReg),               
     .data_o     (MUX_MemtoReg_Result)  
@@ -166,7 +166,7 @@ MUX32 MUX_PC(
     .data1_i    (PC_Four),          
     .data2_i    (PC_Branch),    
     .select_i   (Flush),               
-    .data_o     (MUX_PC_Result)  
+    .data_o     (MUX_PC_Res)  
 );
 
 Registers Registers(
@@ -182,12 +182,12 @@ Registers Registers(
 
 Sign_Extend Sign_Extend(
     .data_i     (IFID_instr[31:0]),        
-    .data_o     (SignExtend_Result)     
+    .data_o     (SignExtend_Res)     
 );
   
 Shift_Left Shift_Left(
-    .data_i     (SignExtend_Result), 
-    .data_o     (ShiftLeft_Result)
+    .data_i     (SignExtend_Res), 
+    .data_o     (ShiftLeft_Res)
 );
 
 Forwarding_Unit Forwarding_Unit(
@@ -201,20 +201,20 @@ Forwarding_Unit Forwarding_Unit(
     .Forward_B_o (Forward_B)
 );
 
-MUX32_4 Forward_MUX_A(
+MUX32_4 ForwardA_MUX(
     .Forward_i (Forward_A),
     .EX_RS_Data_i (IDEX_RS1Data),
-    .MEM_ALU_Result_i (EXMEM_ALUResult),
+    .MEM_ALU_Result_i (EXMEM_ALU_Res),
     .WB_WriteData_i (MUX_MemtoReg_Result),
-    .MUX_Result_o (Forward_MUX_A_Result)
+    .MUX_Result_o (ForwardA_MUX_Res)
 );
 
-MUX32_4 Forward_MUX_B(
+MUX32_4 ForwardB_MUX(
     .Forward_i (Forward_B),
     .EX_RS_Data_i (IDEX_RS2Data),
-    .MEM_ALU_Result_i (EXMEM_ALUResult),
+    .MEM_ALU_Result_i (EXMEM_ALU_Res),
     .WB_WriteData_i (MUX_MemtoReg_Result),
-    .MUX_Result_o (Forward_MUX_B_Result)
+    .MUX_Result_o (ForwardB_MUX_Res)
 );
 
 Hazard_Detection Hazard_Detection(
@@ -227,7 +227,7 @@ Hazard_Detection Hazard_Detection(
     .NoOp_o(NoOp)
 );
 
-///////// Project 2 /////////
+// Changes for Project 2
 
 PC PC(
     .clk_i      (clk_i),     
@@ -235,8 +235,8 @@ PC PC(
     .start_i    (start_i),
     .stall_i    (CacheCtrl_Stall), 
     .PCWrite_i  (PCWrite),    
-    .pc_i       (MUX_PC_Result),     
-    .pc_o       (PC_o)           
+    .pc_i       (MUX_PC_Res),     
+    .pc_o       (PC_now)           
 );
 
 Register_IFID IFID(
@@ -245,10 +245,11 @@ Register_IFID IFID(
     .stall_i(CacheCtrl_Stall), 
 
     .instr_i(instr),
-    .pc_i(PC_o),
+    .pc_i(PC_now),
 
     .Stall_i(Stall),
     .Flush_i(Flush),
+
     .instr_o(IFID_instr),
     .pc_o(IFID_pc)
 );
@@ -260,7 +261,7 @@ Register_IDEX IDEX(
 
     .RS1Data_i(RS1data), 
     .RS2Data_i(RS2data),
-    .SignExtended_i(SignExtend_Result), 
+    .SignExtended_i(SignExtend_Res), 
     .funct_i({IFID_instr[31:25],IFID_instr[14:12]}),
     .RdAddr_i(IFID_instr[11:7]),
     .RS1Addr_i(IFID_instr[19:15]),
@@ -274,13 +275,13 @@ Register_IDEX IDEX(
     .RS1Addr_o(IDEX_RS1Addr),
     .RS2Addr_o(IDEX_RS2Addr),
 
+    //Control Signal
     .RegWrite_i(Ctrl_RegWrite), 
     .MemtoReg_i(Ctrl_MemtoReg), 
     .MemRead_i(Ctrl_MemRead),  
     .MemWrite_i(Ctrl_MemWrite), 
     .ALUOp_i(Ctrl_ALUOp), 
     .ALUSrc_i(Ctrl_ALUSrc),
-
     .RegWrite_o(IDEX_RegWrite),
     .MemtoReg_o(IDEX_MemtoReg),
     .MemRead_o(IDEX_MemRead),
@@ -294,19 +295,19 @@ Register_EXMEM EXMEM(
     .start_i(start_i),
     .stall_i(CacheCtrl_Stall), 
 
-    .ALU_Result_i(ALU_Result),
-    .MemWrite_Data_i(Forward_MUX_B_Result),
+    .ALU_Result_i(ALU_Res),
+    .MemWrite_Data_i(ForwardB_MUX_Res),
     .RdAddr_i(IDEX_RDAddr),
 
-    .ALU_Result_o(EXMEM_ALUResult),
+    .ALU_Result_o(EXMEM_ALU_Res),
     .MemWrite_Data_o(EXMEM_MemWriteData),
     .RdAddr_o(EXMEM_RDAddr),
 
+    //Control Signal
     .RegWrite_i(IDEX_RegWrite), 
     .MemtoReg_i(IDEX_MemtoReg), 
     .MemRead_i(IDEX_MemRead),  
     .MemWrite_i(IDEX_MemWrite), 
-
     .RegWrite_o(EXMEM_RegWrite), 
     .MemtoReg_o(EXMEM_MemtoReg), 
     .MemRead_o(EXMEM_MemRead),  
@@ -318,17 +319,17 @@ Register_MEMWB MEMWB(
     .start_i(start_i),
     .stall_i(CacheCtrl_Stall), 
 
-    .MemAddr_i(EXMEM_ALUResult),
+    .MemAddr_i(EXMEM_ALU_Res),
     .MemRead_Data_i(CacheCtrl_MEMWB_Data),
     .RdAddr_i(EXMEM_RDAddr),
 
-    .MemAddr_o(MEMWB_ALUResult),
+    .MemAddr_o(MEMWB_ALU_Res),
     .MemRead_Data_o(MEMWB_MemReadData),
     .RdAddr_o(MEMWB_RDAddr),
 
+    //Control Signal
     .RegWrite_i(EXMEM_RegWrite),
     .MemtoReg_i(EXMEM_MemtoReg),
-
     .RegWrite_o(MEMWB_RegWrite),
     .MemtoReg_o(MEMWB_MemtoReg)
 );
@@ -339,17 +340,15 @@ dcache_controller dcache(
 
     .mem_data_i(mem_data_i), 
     .mem_ack_i(mem_ack_i),
-
     .mem_data_o(mem_data_o),
     .mem_addr_o(mem_addr_o), 
     .mem_enable_o(mem_enable_o), 
     .mem_write_o(mem_write_o), 
 
     .cpu_data_i(EXMEM_MemWriteData), 
-    .cpu_addr_i(EXMEM_ALUResult),
+    .cpu_addr_i(EXMEM_ALU_Res),
     .cpu_MemRead_i(EXMEM_MemRead), 
     .cpu_MemWrite_i(EXMEM_MemWrite), 
-
     .cpu_data_o(CacheCtrl_MEMWB_Data), 
     .cpu_stall_o(CacheCtrl_Stall)
 );
