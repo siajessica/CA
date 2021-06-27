@@ -7,10 +7,10 @@ module Register_IFID(
     pc_i,
 
 	Stall_i,
-    Flush_i,
+    Flush_i
 
 	instr_o,
-    pc_o
+    pc_o,
 );
 
 input			clk_i,start_i, stall_i;
