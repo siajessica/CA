@@ -80,33 +80,33 @@ initial begin
     end
     // [RegisterInitialization] DO NOT REMOVE THIS FLAG !!!
     
-    CPU.IFID.instr_o                = 32'b0;
+    CPU.Register_IFID.instr_o                = 32'b0;
 
-    CPU.IDEX.RS1Data_o              = 32'b0;
-    CPU.IDEX.RS2Data_o              = 32'b0;
-    CPU.IDEX.SignExtend_Res_o       = 32'b0;
-    CPU.IDEX.funct_o                = 10'b0;
-    CPU.IDEX.RDaddr_o               = 5'b0;
-    CPU.IDEX.RegWrite_o             = 1'b0;
-    CPU.IDEX.MemtoReg_o             = 1'b0;
-    CPU.IDEX.MemRead_o              = 1'b0;
-    CPU.IDEX.MemWrite_o             = 1'b0;
-    CPU.IDEX.ALUOp_o                = 2'b0;
-    CPU.IDEX.ALUSrc_o               = 1'b0; 
+    CPU.Register_IDEX.RS1Data_o              = 32'b0;
+    CPU.Register_IDEX.RS2Data_o              = 32'b0;
+    CPU.Register_IDEX.SignExtend_Res_o       = 32'b0;
+    CPU.Register_IDEX.funct_o                = 10'b0;
+    CPU.Register_IDEX.RDaddr_o               = 5'b0;
+    CPU.Register_IDEX.RegWrite_o             = 1'b0;
+    CPU.Register_IDEX.MemtoReg_o             = 1'b0;
+    CPU.Register_IDEX.MemRead_o              = 1'b0;
+    CPU.Register_IDEX.MemWrite_o             = 1'b0;
+    CPU.Register_IDEX.ALUOp_o                = 2'b0;
+    CPU.Register_IDEX.ALUSrc_o               = 1'b0; 
 
-    CPU.EXMEM.ALU_Res_o             = 32'b0;
-    CPU.EXMEM.MemWrite_Data_o       = 32'b0;
-    CPU.EXMEM.RDaddr_o              = 5'b0;
-    CPU.EXMEM.RegWrite_o            = 1'b0; 
-    CPU.EXMEM.MemtoReg_o            = 1'b0; 
-    CPU.EXMEM.MemRead_o             = 1'b0;  
-    CPU.EXMEM.MemWrite_o            = 1'b0;
+    CPU.Register_EXMEM.ALU_Res_o             = 32'b0;
+    CPU.Register_EXMEM.MemWrite_Data_o       = 32'b0;
+    CPU.Register_EXMEM.RDaddr_o              = 5'b0;
+    CPU.Register_EXMEM.RegWrite_o            = 1'b0; 
+    CPU.Register_EXMEM.MemtoReg_o            = 1'b0; 
+    CPU.Register_EXMEM.MemRead_o             = 1'b0;  
+    CPU.Register_EXMEM.MemWrite_o            = 1'b0;
 
-    CPU.MEMWB.MemAddr_o             = 32'b0;
-    CPU.MEMWB.MemRead_Data_o        = 32'b0;
-    CPU.MEMWB.RDaddr_o              = 5'b0;
-    CPU.MEMWB.RegWrite_o            = 1'b0;
-    CPU.MEMWB.MemtoReg_o            = 1'b0;
+    CPU.Register_MEMWB.MemAddr_o             = 32'b0;
+    CPU.Register_MEMWB.MemRead_Data_o        = 32'b0;
+    CPU.Register_MEMWB.RDaddr_o              = 5'b0;
+    CPU.Register_MEMWB.RegWrite_o            = 1'b0;
+    CPU.Register_MEMWB.MemtoReg_o            = 1'b0;
 
     // Load instructions into instruction memory
     // Make sure you change back to "instruction.txt" before submission
